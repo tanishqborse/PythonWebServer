@@ -1,0 +1,8 @@
+2023-04-27 23:40:47 GET /server.py HTTP/1.1
+2023-04-27 23:42:33 GET /getscript.py HTTP/1.1
+2023-04-27 23:46:01 GET /getscript.py HTTP/1.1
+2023-04-27 23:46:37 GET /getscript.php HTTP/1.1
+2023-04-28 02:34:12 GET /getscript.php?name=Tanishq&age=17 HTTP/1.1
+2023-04-28 02:34:29 GET /getscript.php HTTP/1.1
+2023-04-28 20:21:01 GET / HTTP/1.1
+2023-04-28 20:21:01 GET /favicon.ico HTTP/1.1
