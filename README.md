@@ -54,7 +54,7 @@ This will start the Python web server inside a Docker container, mapping port 80
 ## 🔧 Customization
 
 - **PHP Integration**: Place PHP scripts in the `php` directory to execute server-side logic.
-- **Static Content**: Place HTML, CSS, JavaScript, and other static files in the `static` directory to serve them via the web server.
+- **Static Content**: Place HTML, CSS, JavaScript, and other static files in the `static` directory to serve them via the web server. If the directory does not exist, create it with `mkdir static`.
 - **Server Configuration**: Modify `server.py` to customize server behavior, add new endpoints, or handle additional request types.
 
 ---
