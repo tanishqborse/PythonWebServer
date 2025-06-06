@@ -235,21 +235,21 @@ def connect(ip_address, port, certpath, keypath):
     # Check if the server is started in HTTPS mode or HTTP.
     if certpath is None and keypath is None:
         try:
-            # Listen for incomming connections.
+            # Listen for incoming connections.
             s.listen() 
             while True:   
-                # Accept conenction from client.        
+                # Accept connection from client.        
                 conn, addr = s.accept()    
                 # Receive data from client.
                 data = conn.recv(1024)
                 # Convert data from bytes to strings for further processing.
                 reqdata = data.decode('utf-8')
-                # Call fucntion to check the validity and format of the request data from client.
+                # Call function to check the validity and format of the request data from client.
                 validity = validate(reqdata)
                 if validity == 'valid':
                     # If the request is valid, function is called to parse the request data and send the response back to the client.
                     conn.sendall(parse_request(reqdata).encode('utf-8'))
-                    # Close the client socket after successfull response.
+                    # Close the client socket after successful response.
                     conn.close()   
                 # if request is not valid.
                 else:
@@ -257,7 +257,7 @@ def connect(ip_address, port, certpath, keypath):
                     conn.sendall(validity.encode())
                     # Close the client socket.
                     conn.close()
-        # CRTL-C command to terminate the server gracefully.    
+        # CTRL-C command to terminate the server gracefully.    
         except KeyboardInterrupt:
             # Close the client socket.
             conn.close()
@@ -267,7 +267,7 @@ def connect(ip_address, port, certpath, keypath):
             sys.exit('\r\n'+'Server terminated due to KeyboardInterrupt')
 
 
-    # Server to start in HTTPS mode if cert nd key are provided initially.           
+    # Server to start in HTTPS mode if cert and key are provided initially.           
     else:
         # object for ssl layer with purpose of client authentication.
         obj = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
@@ -276,10 +276,10 @@ def connect(ip_address, port, certpath, keypath):
         # Load the SSL certificate and private key.
         obj.load_cert_chain(certfile=certpath, keyfile=keypath)
         sslsock=obj.wrap_socket(s, server_side=True)
-        # Listen for incomming connections.
+        # Listen for incoming connections.
         sslsock.listen(1)
         while True:           
-            # Accept conenction from client.  
+            # Accept connection from client.  
             conn, addr = sslsock.accept()
      
             try: 
@@ -287,7 +287,7 @@ def connect(ip_address, port, certpath, keypath):
                 data = conn.recv(1024)
                 # Convert data from bytes to strings for further processing.
                 reqdata = data.decode('utf-8')
-                # Call fucntion to check the validity and format of the request data from client.
+                # Call function to check the validity and format of the request data from client.
                 validity = validate(reqdata)
                 # If request is valid.
                 if validity == 'valid':
@@ -301,7 +301,7 @@ def connect(ip_address, port, certpath, keypath):
                     conn.sendall(validity.encode())
                     # Close the client socket
                     conn.close()
-            # CRTL-C command to terminate the server gracefully. 
+            # CTRL-C command to terminate the server gracefully. 
             except KeyboardInterrupt:
                 # Close the client socket.
                 conn.close()
