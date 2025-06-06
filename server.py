@@ -89,13 +89,14 @@ def handle_connection(conn, client_address):
         return postmethod(request,filename,conn)
 
     if method == 'PUT':
-        return postmethod(request,path,conn)
+        body = request.split('\r\n\r\n', 1)[1] if '\r\n\r\n' in request else ''
+        return putmethod(method, path2, body)
 
     if method == 'DELETE':
-        return putmethod(method, path2, filename, conn)
+        return deletemethod(method, path2, filename, conn)
 
     if method == 'CONNECT':
-        return putmethod(ipaddr, port, certpath, keypath)
+        send_response(conn, 501)
 
 def log_first_line(request):
     # Open the log file in append mode
@@ -230,7 +231,7 @@ def connect(ip_address, port, certpath, keypath):
     # Establish a socket communication.
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Attach the socket with IP address and PORT provided when starting the server.
-    s.bind((ipaddr, port))
+    s.bind((ip_address, port))
     conn = ''
     # Check if the server is started in HTTPS mode or HTTP.
     if certpath is None and keypath is None:
@@ -329,7 +330,8 @@ def send_response(client_socket, code, body=None, headers=None):
 
 def main():
     # Parse command line arguments
-    if len(sys.argv) < 3 or len(sys.argv) > 4:
+    # Expect either just IP and port or IP, port and certificate pair
+    if len(sys.argv) not in (3, 5):
         print("Usage: python server.py <ip_address> <port> [<cert_file> <key_file>]")
         sys.exit(1)
 
@@ -354,9 +356,8 @@ def main():
     else:
         context = None
         
-    #print listening message
+    # Print listening message
     if context:
-        server_socket = ssl.wrap_socket(server_socket, certfile=cert_file, keyfile=key_file, server_side=True)
         print(f"Listening for HTTPS connections on {ip_address}:{port}...")
     else:
         print(f"Listening for HTTP connections on {ip_address}:{port}...")
